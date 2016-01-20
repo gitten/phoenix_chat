@@ -51,10 +51,46 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 // Finally, pass the token on connect as below. Or remove it
 // from connect if you don't care about authentication.
 
-socket.connect()
+let channel           = socket.channel("rooms:lobby", {})
+let chatInput         = $("#chat-input")
+let messagesContainer = $("#messages")
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
+chatInput.on("keypress", event => {
+  if(event.keyCode === 13){
+    channel.push("new_msg", {body: chatInput.val()})
+    chatInput.val("")
+  }
+})
+
+channel.on("new_msg", payload => {
+  messagesContainer.append(`<br/>[${Date()}] ${payload.body}`)
+})
+
+channel.on("seek", payload => {
+  player.seekTo(payload.body, true);
+  console.log("seek" + payload.body);
+  messagesContainer.append(`<br/>[[Seek video to: ${payload.body}]][${Date()}]`)
+})
+
+channel.on("speed", payload => {
+  player.setPlaybackRate(payload.body)
+  console.log("speed" + payload.body);
+  messagesContainer.append(`<br/>[[New video speed: ${payload.body}]][${Date()}]`)
+})
+
+channel.on("pause", payload => {
+  player.pauseVideo();
+  console.log("pause" + payload.body);
+  messagesContainer.append(`<br/>[[VIDEO PAUSED]][${Date()}]`)
+})
+
+channel.on("play", payload => {
+  player.playVideo();
+  console.log("play" + payload.body);
+  messagesContainer.append(`<br/>[[PLAYING VIDEO]][${Date()}]`)
+})
+
+
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
