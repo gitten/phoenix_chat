@@ -2,7 +2,7 @@
 
 To start your Phoenix app:
 
-  1. Add an entry to your /etc/hosts: 127.0.0.1 gtcode.local
+  1. Add an entry to your /etc/hosts similar to this: `127.0.0.1 gtcode.local`
   2. Install dependencies with `mix deps.get`
   3. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   4. Start Phoenix endpoint with `mix phoenix.server`
