@@ -58,9 +58,13 @@ desired effect
 |---------------------------------------------------------|
 -->
 <body class="hold-transition skin-blue sidebar-mini">
-<%= # render "room_layout_upper.html" %>
-<%= render @view_module, @view_template, assigns %>
-<%= # render "room_layout_lower.html" %>
+
+<%= # render @view_module, @view_template, assigns %>
+<%= render "room_layout_inner.html", %{
+	:view_module => @view_module,
+	:view_template => @view_template,
+	assigns => assigns
+	} %>
 
 <!-- REQUIRED JS SCRIPTS -->
 
