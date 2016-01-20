@@ -10,9 +10,9 @@ config :phoenix_chat, PhoenixChat.Endpoint,
 # http: [port: 4000],
   url: [host: "phoenixchat.local", port: 4001],
   https: [port: 4001,
-  #        #otp_app: :gtcode_com,
-          keyfile: "/Users/paul/Documents/projects/bitbucket/lowndes/gtcode-phoenix/priv/ssl/gtcode.local.key",
-          certfile: "/Users/paul/Documents/projects/bitbucket/lowndes/gtcode-phoenix/priv/ssl/gtcode.local.crt"
+          otp_app: :phoenix_chat,
+          keyfile: "../../../../priv/ssl/phoenixchat.local.key",
+          certfile: "../../../../priv/ssl/phoenixchat.local.crt"
   #        #cacertfile: System.get_env(Path.expand("priv/ssl/gtcode.com.??", __DIR__)) # OPTIONAL Key for intermediate certificates
           ],
   debug_errors: true,
