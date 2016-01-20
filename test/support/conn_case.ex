@@ -21,8 +21,9 @@ defmodule PhoenixChat.ConnCase do
       use Phoenix.ConnTest
 
       alias PhoenixChat.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 2]
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query, only: [from: 1, from: 2]
 
       import PhoenixChat.Router.Helpers
 
@@ -36,6 +37,6 @@ defmodule PhoenixChat.ConnCase do
       Ecto.Adapters.SQL.restart_test_transaction(PhoenixChat.Repo, [])
     end
 
-    :ok
+    {:ok, conn: Phoenix.ConnTest.conn()}
   end
 end

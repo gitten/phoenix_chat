@@ -9,7 +9,7 @@ use Mix.Config
 config :phoenix_chat, PhoenixChat.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  secret_key_base: "DuxGVIZ6nhi0fWSsFTF2h69ag7piIf83zSYbgMHABlZyDV3LeSW8iQS9ETfuhDhP",
+  secret_key_base: "Ip0eGvwUBV9QyCYRh/LTTkCGoqPI1LFYWD/dAi5L6FQB663/w5AFn6BWAH7FiAlo",
   render_errors: [accepts: ~w(html json)],
   pubsub: [name: PhoenixChat.PubSub,
            adapter: Phoenix.PubSub.PG2]

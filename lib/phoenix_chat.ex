@@ -10,7 +10,7 @@ defmodule PhoenixChat do
       # Start the endpoint when the application starts
       supervisor(PhoenixChat.Endpoint, []),
       # Start the Ecto repository
-      worker(PhoenixChat.Repo, []),
+      supervisor(PhoenixChat.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(PhoenixChat.Worker, [arg1, arg2, arg3]),
     ]
