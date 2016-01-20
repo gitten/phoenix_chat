@@ -1,0 +1,57 @@
+<div id="ytplayer"></div>
+<div id="messages"></div>
+<input id="chat-input" type="text"></input>
+
+<style>
+  #ytplayer {
+    pointer-events: none;
+  }
+</style>
+<script>
+  // Load the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/player_api";
+  //tag.setAttribute(class, "youtube-player");
+  //tag.setAttribute(type, "text/html");
+  
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // Replace the 'ytplayer' element with an <iframe> and
+  // YouTube player after the API code downloads.
+  var player;
+  function onYouTubePlayerAPIReady() {
+    player = new YT.Player('ytplayer', {
+      height: '390',
+      width: '640',
+      playerVars: {
+        'autoplay': 1,
+        'controls': 0,
+        'disablekb': 1
+      },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      },
+      enablejsapi: 1,
+      videoId: '8gD_9WPPFb4'
+    });
+  }
+  function onPlayerReady(evt) {
+    //player.seekTo(400, true);
+    //player.seekTo({
+    //  seconds: 128,
+    //  allowSeekAhead: true
+    //});
+//    alert('seeked');
+  }
+  function onPlayerStateChange(evt) 
+{
+    if (evt.data==1) 
+    {
+        // this will seek to a certain point when video starts
+        // but youre better off using 'start' parameter
+         //player.seekTo(200);   
+    }
+}
+</script>

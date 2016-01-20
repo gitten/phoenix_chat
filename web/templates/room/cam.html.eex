@@ -1,0 +1,10 @@
+<canvas id="inputCanvas" width="320" height="240" style=""></canvas>
+<video id="inputVideo" autoplay loop></video>
+<script type="text/javascript">
+  var videoInput = document.getElementById('inputVideo');
+  var canvasInput = document.getElementById('inputCanvas');
+
+  var htracker = new headtrackr.Tracker();
+  htracker.init(videoInput, canvasInput);
+  htracker.start();
+</script>
