@@ -7,7 +7,14 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :phoenix_chat, PhoenixChat.Endpoint,
-  http: [port: 4000],
+  #http: [port: 4000],
+  url: [host: "gtcode.local", port: 4001],
+  https: [port: 4001,
+  #        #otp_app: :gtcode_com,
+          keyfile: "/Users/paul/Documents/projects/bitbucket/lowndes/gtcode-phoenix/priv/ssl/gtcode.local.key",
+          certfile: "/Users/paul/Documents/projects/bitbucket/lowndes/gtcode-phoenix/priv/ssl/gtcode.local.crt"
+  #        #cacertfile: System.get_env(Path.expand("priv/ssl/gtcode.com.??", __DIR__)) # OPTIONAL Key for intermediate certificates
+          ],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
