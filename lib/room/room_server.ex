@@ -1,7 +1,5 @@
 defmodule PhoenixChat.RoomServer do
   use GenServer
-  
-  #alias Phoenix.PubSub.Local
 
   def start_single do
     case GenServer.start(PhoenixChat.RoomServer, nil, name: :room_server) do
@@ -17,6 +15,10 @@ defmodule PhoenixChat.RoomServer do
   end
 
   def add_entry(room_server, new_entry) do
+    GenServer.cast(room_server, {:add_entry, new_entry})
+  end
+
+  def update_entry(room_server, new_entry) do
     GenServer.cast(room_server, {:add_entry, new_entry})
   end
 
@@ -67,16 +69,7 @@ defmodule PhoenixChat.RoomServer do
   end
   
   def handle_info(:heartbeat, state) do
-    PhoenixChat.Endpoint.config(:pubsub)[:name]
-    |> Phoenix.PubSub.Local.subscribers("room:lobby", 0)
-    |> IO.inspect
-   #PhoenixChat.Endpoint.config(:pubsub)[:adapter]
-   #|> Phoenix.PubSub.Local.subscribers("rooms:lobby")
-   
-   #IO.inspect Phoenix.PubSub.PG2
-   #IO.inspect Phoenix.PubSub.Local.subscribers(:sfasfsaf, "rooms:lobby")
-    #IO.puts "broadcasting from room_server gen_server"
-    PhoenixChat.Endpoint.broadcast! "rooms:lobby", "user_list", %{:user_list => "user_list"}
+    PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => "user_list"}
     {:noreply, state}
   end
   

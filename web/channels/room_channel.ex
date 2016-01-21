@@ -10,6 +10,16 @@ defmodule PhoenixChat.RoomChannel do
     {:error, %{reason: "unauthorized"}}
   end
   
+  def handle_in("heartbeat", %{"time" => time}, socket) do
+    room_server = PhoenixChat.RoomServer.start_single
+    
+    #PhoenixChat.RoomServer.add_entry(room_server,
+    #  %{user_id: {pid},
+    #    name: :erlang.pid_to_list(pid)})
+    #{:ok, assign(socket, :user_id, socket.transport_pid)}
+    {:noreply, socket}
+  end
+  
   def handle_in("new_msg", %{"body" => body}, socket) do
     cond do
       Regex.match?(~r/^\d+$/, body) ->
@@ -17,7 +27,7 @@ defmodule PhoenixChat.RoomChannel do
       Regex.match?(~r/^\d+\.\d+$/, body) ->
         broadcast! socket, "speed", %{body: body}
       Regex.match?(~r/^p$/, body) ->
-        IO.puts("pause" <> body)
+        #IO.puts("pause" <> body)
         #IO.inspect socket
         broadcast! socket, "pause", %{body: body}
       Regex.match?(~r/^up$/, body) ->

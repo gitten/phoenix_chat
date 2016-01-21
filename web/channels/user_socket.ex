@@ -23,9 +23,11 @@ defmodule PhoenixChat.UserSocket do
     #IO.inspect socket
     pid = socket.transport_pid
     room_server = PhoenixChat.RoomServer.start_single
-    PhoenixChat.RoomServer.add_entry(room_server,
+    user = PhoenixChat.RoomServer.add_entry(room_server,
       %{user_id: {pid},
-        name: :erlang.pid_to_list(pid)})
+        name: :erlang.pid_to_list(pid),
+        heartbeat: :erlang.system_time()})
+    IO.inspect user
     {:ok, assign(socket, :user_id, socket.transport_pid)}
 #    {:ok, socket}
   end
