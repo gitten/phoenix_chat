@@ -1,7 +1,9 @@
 <div class="wrapper">
 
   <%= render "header.html" %>
-  <%= render "sidebar.html" %>
+  <%= render "sidebar.html", %{
+    :room_size => @room_size,
+    :room_data => @room_data} %>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

@@ -32,7 +32,10 @@
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" id="sidebarMenu">
-        <!--- <li class="header">HEADER</li> --->
+        <%= for row <- Map.values(@room_data) do %>
+          <li class="active"><a href="#"><i class="fa fa-link"></i> <span><%= row[:name] %></span></a></li>
+        <% end %>
+        <li class="header" id="totalUsers">Total Users: <%= @room_size %></li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active"  style="display:none;"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
         <li><a href="#"  style="display:none;"><i class="fa fa-link"></i> <span>Another Link</span></a></li>

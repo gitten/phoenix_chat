@@ -54,14 +54,14 @@ desired effect
 |---------------------------------------------------------|
 -->
 <body class="hold-transition skin-blue sidebar-mini">
-
+ 
 <%= # render @view_module, @view_template, assigns %>
 <%= render "room_layout_inner.html", %{
-	:view_module => @view_module,
-	:view_template => @view_template,
-	assigns => assigns
-	}
-%>
+  :view_module => @view_module,
+  :view_template => @view_template,
+  :room_size => @room_size,
+  :room_data => @room_data,
+  assigns => assigns } %>
 
 <!-- REQUIRED JS SCRIPTS -->
 
