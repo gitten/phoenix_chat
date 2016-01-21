@@ -20,15 +20,7 @@
 
     <!-- Main content -->
     <section class="content">
-    
-    
-    
-
       <%= render @view_module, @view_template, assigns %>
-
-
-
-
     </section>
     <!-- /.content -->
   </div>
