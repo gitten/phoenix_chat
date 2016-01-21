@@ -6,7 +6,8 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    
+    <section class="content-header" style="display:none;">
       <h1>
         Page Header
         <small>Optional description</small>
@@ -34,7 +35,7 @@
   <!-- /.content-wrapper -->
 
 
-  <%= render "footer.html" %>
+  <%= # render "footer.html" %>
 
   <%= render "control_sidebar.html" %>
 
