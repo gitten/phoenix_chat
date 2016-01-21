@@ -67,9 +67,15 @@ defmodule PhoenixChat.RoomServer do
   end
   
   def handle_info(:heartbeat, state) do
-   IO.inspect PhoenixChat.Endpoint.config(:pubsub)[:adapter]
-   IO.inspect Phoenix.PubSub.PG2
+    PhoenixChat.Endpoint.config(:pubsub)[:name]
+    |> Phoenix.PubSub.Local.subscribers("room:lobby", 0)
+    |> IO.inspect
+   #PhoenixChat.Endpoint.config(:pubsub)[:adapter]
+   #|> Phoenix.PubSub.Local.subscribers("rooms:lobby")
+   
+   #IO.inspect Phoenix.PubSub.PG2
    #IO.inspect Phoenix.PubSub.Local.subscribers(:sfasfsaf, "rooms:lobby")
+    #IO.puts "broadcasting from room_server gen_server"
     PhoenixChat.Endpoint.broadcast! "rooms:lobby", "user_list", %{:user_list => "user_list"}
     {:noreply, state}
   end
