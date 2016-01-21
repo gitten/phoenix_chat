@@ -20,7 +20,13 @@ defmodule PhoenixChat.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket) do
-    {:ok, assign(socket, :user_id, :random.uniform(12345))}
+    pid = socket.transport_pid
+    #IO.inspect pid
+    room_server = PhoenixChat.RoomServer.start_single
+    PhoenixChat.RoomServer.add_entry(room_server,
+      %{user_id: {pid},
+        name: :erlang.pid_to_list(pid)})
+    {:ok, assign(socket, :user_id, socket.transport_pid)}
 #    {:ok, socket}
   end
 

@@ -1,6 +1,17 @@
 defmodule PhoenixChat.RoomServer do
   use GenServer
 
+  def start_single do
+    IO.puts "starting gen_server"
+    IO.inspect self()
+    case GenServer.start(PhoenixChat.RoomServer, nil, name: :room_server) do
+      {:ok, room_server} ->
+        room_server
+      {:error, {:already_started, room_server}} ->
+        room_server
+    end
+  end
+  
   def start do
     GenServer.start(PhoenixChat.RoomServer, nil, name: :room_server)
   end
@@ -22,15 +33,14 @@ defmodule PhoenixChat.RoomServer do
   end
 
   def init(_) do
+    :timer.send_interval(2000, :heartbeat)
     {:ok, PhoenixChat.RoomList.new}
   end
-
 
   def handle_cast({:add_entry, new_entry}, room_list) do
     new_state = PhoenixChat.RoomList.add_entry(room_list, new_entry)
     {:noreply, new_state}
   end
-
 
   def handle_call({:entries, user_id}, _, room_list) do
     {
@@ -56,8 +66,16 @@ defmodule PhoenixChat.RoomServer do
     }
   end
   
+  def handle_info(:heartbeat, state) do
+    IO.puts "now"
+    {:noreply, state}
+  end
   
   # Needed for testing purposes
   def handle_info(:stop, room_list), do: {:stop, :normal, room_list}
-  def handle_info(_, state), do: {:noreply, state}
+  
+  def handle_info(_, state) do
+    IO.puts "nans"
+    {:noreply, state}
+  end
 end

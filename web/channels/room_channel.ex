@@ -18,7 +18,7 @@ defmodule PhoenixChat.RoomChannel do
         broadcast! socket, "speed", %{body: body}
       Regex.match?(~r/^p$/, body) ->
         IO.puts("pause" <> body)
-        IO.inspect socket
+        #IO.inspect socket
         broadcast! socket, "pause", %{body: body}
       Regex.match?(~r/^up$/, body) ->
         broadcast! socket, "play", %{body: body}
