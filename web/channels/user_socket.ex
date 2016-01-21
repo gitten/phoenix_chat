@@ -20,8 +20,8 @@ defmodule PhoenixChat.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket) do
+    #IO.inspect socket
     pid = socket.transport_pid
-    #IO.inspect pid
     room_server = PhoenixChat.RoomServer.start_single
     PhoenixChat.RoomServer.add_entry(room_server,
       %{user_id: {pid},

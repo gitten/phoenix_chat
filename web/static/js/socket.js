@@ -98,4 +98,8 @@ channel.on("play", payload => {
   messagesContainer.append(`<br/>[[PLAYING VIDEO]][${Date()}]`)
 })
 
+channel.on("user_list", payload => {
+    console.log("user list!");
+})
+
 export default socket

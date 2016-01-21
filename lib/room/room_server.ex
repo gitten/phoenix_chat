@@ -1,9 +1,9 @@
 defmodule PhoenixChat.RoomServer do
   use GenServer
+  
+  #alias Phoenix.PubSub.Local
 
   def start_single do
-    IO.puts "starting gen_server"
-    IO.inspect self()
     case GenServer.start(PhoenixChat.RoomServer, nil, name: :room_server) do
       {:ok, room_server} ->
         room_server
@@ -67,7 +67,10 @@ defmodule PhoenixChat.RoomServer do
   end
   
   def handle_info(:heartbeat, state) do
-    IO.puts "now"
+   IO.inspect PhoenixChat.Endpoint.config(:pubsub)[:adapter]
+   IO.inspect Phoenix.PubSub.PG2
+   #IO.inspect Phoenix.PubSub.Local.subscribers(:sfasfsaf, "rooms:lobby")
+    PhoenixChat.Endpoint.broadcast! "rooms:lobby", "user_list", %{:user_list => "user_list"}
     {:noreply, state}
   end
   
@@ -75,7 +78,6 @@ defmodule PhoenixChat.RoomServer do
   def handle_info(:stop, room_list), do: {:stop, :normal, room_list}
   
   def handle_info(_, state) do
-    IO.puts "nans"
     {:noreply, state}
   end
 end
