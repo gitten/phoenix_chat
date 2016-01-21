@@ -18,8 +18,8 @@ defmodule PhoenixChat.RoomServer do
     GenServer.cast(room_server, {:add_entry, new_entry})
   end
 
-  def update_entry(room_server, new_entry) do
-    GenServer.cast(room_server, {:add_entry, new_entry})
+  def update_entry(room_server, {:user_id, user_id, new_entry}) do
+    GenServer.cast(room_server, {:update_entry, {:user_id, user_id, new_entry}})
   end
 
   def entries(room_server, user_id) do
@@ -41,6 +41,12 @@ defmodule PhoenixChat.RoomServer do
 
   def handle_cast({:add_entry, new_entry}, room_list) do
     new_state = PhoenixChat.RoomList.add_entry(room_list, new_entry)
+    IO.inspect new_state
+    {:noreply, new_state}
+  end
+
+  def handle_cast({:update_entry, {:user_id, user_id, new_entry}}, room_list) do
+    new_state = PhoenixChat.RoomList.update_entry()
     {:noreply, new_state}
   end
 

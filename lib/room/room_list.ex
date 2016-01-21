@@ -18,8 +18,8 @@ defmodule PhoenixChat.RoomList do
     entry
   ) do
     entry = Map.put(entry, :id, auto_id)
-    new_entries = Map.put(entries, auto_id, entry)
-
+    new_entries = Map.put(entries, entry[:user_id], entry)
+    IO.inspect new_entries
     %PhoenixChat.RoomList{room_list |
       entries: new_entries,
       auto_id: auto_id + 1

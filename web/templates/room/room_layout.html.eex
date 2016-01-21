@@ -10,6 +10,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <title>Phoenix Chat</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <%= tag :meta, name: "channel_token",
+               content: Phoenix.Token.sign(@conn, "user", @user_id)
+  %>
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="<%= static_path(@conn, "/bootstrap/css/bootstrap.min.css") %>">
   <!-- Font Awesome -->
@@ -32,6 +35,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <![endif]-->
   <!--- <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>"> --->
   <!--- <script src="js/headtrackr.js"></script> --->
+  <script>window.userToken = "<%= assigns[:user_token] %>";</script>
 </head>
 <!--
 BODY TAG OPTIONS:

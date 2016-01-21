@@ -100,7 +100,7 @@ channel.on("play", payload => {
 
 channel.on("heartbeat", payload => {
   channel.push("heartbeat", {time: payload.time})
-    //console.log("user list!");
+  //console.log("user list!");
 })
 
 export default socket

@@ -12,7 +12,7 @@ defmodule PhoenixChat.RoomChannel do
   
   def handle_in("heartbeat", %{"time" => time}, socket) do
     room_server = PhoenixChat.RoomServer.start_single
-    
+    IO.inspect socket
     #PhoenixChat.RoomServer.add_entry(room_server,
     #  %{user_id: {pid},
     #    name: :erlang.pid_to_list(pid)})
