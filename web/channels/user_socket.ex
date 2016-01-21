@@ -20,7 +20,8 @@ defmodule PhoenixChat.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, :user_id, :random.uniform(12345))}
+#    {:ok, socket}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

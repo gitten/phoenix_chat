@@ -55,7 +55,9 @@ socket.connect()
 
 let channel           = socket.channel("rooms:lobby", {})
 channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("ok", resp => {
+    console.log("Joined successfully", resp)
+  })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 let chatInput         = $("#chat-input")

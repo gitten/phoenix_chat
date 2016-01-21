@@ -2,6 +2,7 @@ defmodule PhoenixChat.RoomChannel do
   use Phoenix.Channel
 
   def join("rooms:lobby", _message, socket) do
+    #socket = assign(socket, :user, msg[:random.uniform(777)])
     {:ok, socket}
   end
   
@@ -17,6 +18,7 @@ defmodule PhoenixChat.RoomChannel do
         broadcast! socket, "speed", %{body: body}
       Regex.match?(~r/^p$/, body) ->
         IO.puts("pause" <> body)
+        IO.inspect socket
         broadcast! socket, "pause", %{body: body}
       Regex.match?(~r/^up$/, body) ->
         broadcast! socket, "play", %{body: body}
@@ -41,7 +43,13 @@ defmodule PhoenixChat.RoomChannel do
     {:noreply, socket}
   end
 
+  intercept ["new_msg"]
+  
   def handle_out("new_msg", payload, socket) do
+    #IO.puts "start"
+    #IO.inspect payload
+    #IO.inspect socket
+    #    IO.puts "end"
     push socket, "new_msg", payload
     {:noreply, socket}
   end
