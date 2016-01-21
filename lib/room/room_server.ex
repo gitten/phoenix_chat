@@ -2,7 +2,7 @@ defmodule PhoenixChat.RoomServer do
   use GenServer
 
   def start do
-    GenServer.start(PhoenixChat.RoomServer, nil)
+    GenServer.start(PhoenixChat.RoomServer, nil, name: :room_server)
   end
 
   def add_entry(room_server, new_entry) do

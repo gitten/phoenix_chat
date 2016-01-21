@@ -6,8 +6,15 @@ defmodule PhoenixChat.RoomController do
   #plug :scrub_params, "contact_form" when action in [:dakine]
  
   def index(conn, _params) do
-  
-    {:ok, room_server} = PhoenixChat.RoomServer.start
+    case PhoenixChat.RoomServer.start do
+      {:ok, room_server} ->
+        serve(conn, _params, room_server)
+      {:error, {:already_started, room_server}} ->
+        serve(conn, _params, room_server)
+    end
+  end
+ 
+  defp serve(conn, _params, room_server) do
     PhoenixChat.RoomServer.add_entry(room_server,
           %{user_id: {:random.uniform}, name: :random.uniform})
     #PhoenixChat.RoomServer.add_entry(room_server,
