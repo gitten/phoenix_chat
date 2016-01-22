@@ -37,6 +37,12 @@ defmodule PhoenixChat.RoomList do
       entry
     }
   end
+  
+  def entry(%PhoenixChat.RoomList{entries: entries}, :user_id, user_id) do
+    entries = entries(%PhoenixChat.RoomList{entries: entries}, :user_id, user_id)
+    [entry | _] = entries
+    entry
+  end
 
   def entries(%PhoenixChat.RoomList{entries: entries}, :user_id, user_id) do
     entries

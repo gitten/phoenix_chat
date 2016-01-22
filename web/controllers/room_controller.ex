@@ -6,22 +6,22 @@ defmodule PhoenixChat.RoomController do
     user_id = :random.uniform(99999999999)
     room_server = PhoenixChat.RoomServer.start_single
     {name, gender} = getRandomName()
+    token = Phoenix.Token.sign(conn, "user", user_id)
+    assign(conn, :user_token, token)
     user = PhoenixChat.RoomServer.add_entry(room_server,
       %{user_id: user_id,
         name: name,
         gender: gender,
         heartbeat: :erlang.system_time(),
         presence: "present",
+        channel_token: token,
         pid: to_string(:erlang.pid_to_list(self))})
-    x = PhoenixChat.RoomServer.size(room_server, :present)
-    y = PhoenixChat.RoomServer.entries(room_server, :present)
-    id = user.user_id
-    token = Phoenix.Token.sign(conn, "user", id)
-    assign(conn, :user_token, token)
+    room_size = PhoenixChat.RoomServer.size(room_server, :present)
+    room_data = PhoenixChat.RoomServer.entries(room_server, :present)
     render(conn, "index.html",
-      room_data: y,
-      room_size: x,
-      user_id: id,
+      room_data: room_data,
+      room_size: room_size,
+      user_id: user_id,
       channel_token: token)
   end
   
@@ -30,7 +30,8 @@ defmodule PhoenixChat.RoomController do
     names = randomName()
     gender = :random.uniform(2)
     tuple = names[place]
-    #out = "a"
+    gdr = "f"
+    out = "name"
     if gender == 2 do
       gdr = "f"
       {out, _} = tuple

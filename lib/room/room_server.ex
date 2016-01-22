@@ -18,6 +18,9 @@ defmodule PhoenixChat.RoomServer do
     GenServer.call(room_server, {:add_entry, new_entry})
   end
   
+  def entry(room_server, field, param) do
+    GenServer.call(room_server, {:entry, field, param})
+  end
   
   def entries(room_server, field, param) do
     GenServer.call(room_server, {:entries, field, param})
@@ -66,6 +69,14 @@ defmodule PhoenixChat.RoomServer do
       :reply,
       updated_new_entry,
       new_state
+    }
+  end
+
+  def handle_call({:entry, field, param}, _, room_list) do
+    {
+      :reply,
+      PhoenixChat.RoomList.entry(room_list, field, param),
+      room_list
     }
   end
 

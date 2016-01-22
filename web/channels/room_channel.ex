@@ -26,17 +26,19 @@ defmodule PhoenixChat.RoomChannel do
   end
   
   def handle_in("new_msg", %{"body" => body}, socket) do
+    room_server = PhoenixChat.RoomServer.start_single
+    user = PhoenixChat.RoomServer.entry(room_server, :user_id, socket.assigns.user_id)
     cond do
       Regex.match?(~r/^\d+$/, body) ->
-        broadcast! socket, "seek", %{body: body }
+        broadcast! socket, "seek", %{user_id: user.user_id, name: user.name, body: body }
       Regex.match?(~r/^\d+\.\d+$/, body) ->
-        broadcast! socket, "speed", %{body: body}
+        broadcast! socket, "speed", %{user_id: user.user_id, name: user.name, body: body }
       Regex.match?(~r/^p$/, body) ->
-        broadcast! socket, "pause", %{body: body}
+        broadcast! socket, "pause", %{user_id: user.user_id, name: user.name, body: body }
       Regex.match?(~r/^up$/, body) ->
-        broadcast! socket, "play", %{body: body}
+        broadcast! socket, "play", %{user_id: user.user_id, name: user.name, body: body }
       true ->
-        broadcast! socket, "new_msg", %{body: body}
+        broadcast! socket, "new_msg", %{user_id: user.user_id, name: user.name, body: body }
     end
     {:noreply, socket}
   end
