@@ -3,7 +3,7 @@ defmodule PhoenixChat.RoomController do
  
   def index(conn, _params) do
     :random.seed(:erlang.system_time())
-    user_id = :erlang.system_time()
+    user_id = :random.uniform(99999999999)
     room_server = PhoenixChat.RoomServer.start_single
     user = PhoenixChat.RoomServer.add_entry(room_server,
       %{user_id: {user_id},
