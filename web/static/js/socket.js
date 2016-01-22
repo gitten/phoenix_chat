@@ -170,3 +170,19 @@ function chatRowOther(user) {
 }
 
 export default socket
+
+
+var myNameModal = $('#myModal').modal();
+$('#myName').focus();
+
+
+$("#applyMyModal").click(function(){
+  var name = $("#myName").val().trim();
+  var gender =$("#myGender").val().trim();
+  if (name === "" || gender === "") {
+    alert('You must enter a name and gender');
+    return;
+  }
+  channel.push("user_info", {name: name, gender: gender});
+  myNameModal.modal('hide');
+});

@@ -1,3 +1,35 @@
+<!-- http://getbootstrap.com/javascript/#modals -->
+<!-- Button trigger modal -->
+
+
+<!--
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch username modal
+</button>
+-->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Enter your name/gender</h4>
+      </div>
+      <div class="modal-body">
+        Name:
+        <input id="myName" type="text" name="name">
+        &nbsp;Gender:
+        <input id="myGender" type="text" name="name">
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-primary" id="applyMyModal">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
 <%= render "youtube.html" %>
 <%= render "chat_box.html" %>
 

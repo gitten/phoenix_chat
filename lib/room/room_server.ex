@@ -33,6 +33,12 @@ defmodule PhoenixChat.RoomServer do
   def size(room_server, param) do
     GenServer.call(room_server, {:size, param})
   end
+  
+  def update_entry_field(room_server, user_id, field, value) do
+    GenServer.call(room_server, {:update_entry_field, user_id, field, value})
+  end
+  
+  
     
   def update_heartbeat(room_server, user_id) do
     GenServer.cast(room_server, {:update_heartbeat, user_id})
@@ -51,6 +57,16 @@ defmodule PhoenixChat.RoomServer do
     new_state = PhoenixChat.RoomList.update_heartbeat(room_list, user_id)
     {:noreply, new_state}
   end
+
+  def handle_call({:update_entry_field, user_id, field, value}, _, room_list) do
+    new_state = PhoenixChat.RoomList.update_entry_field(room_list, user_id, field, value)
+   {
+      :reply,
+      nil,
+      new_state
+    }
+  end
+
 
   def handle_call({:close_user, user_id}, _, room_list) do
     new_state = PhoenixChat.RoomList.close_user(room_list, user_id)

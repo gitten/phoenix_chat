@@ -45,6 +45,20 @@ defmodule PhoenixChat.RoomChannel do
     end
     {:noreply, socket}
   end
+  
+  def handle_in("user_info", %{"name" => name, "gender" => gender}, socket) do
+    room_server = PhoenixChat.RoomServer.start_single
+    user_id = socket.assigns.user_id
+    user = PhoenixChat.RoomServer.entry(room_server, :user_id, socket.assigns.user_id)
+    PhoenixChat.RoomServer.update_entry_field(room_server, user_id, :name, name)
+    PhoenixChat.RoomServer.update_entry_field(room_server, user_id, :gender, gender)
+
+    # new_state = PhoenixChat.RoomList.update_entries_presence(room_list)
+    user_list = PhoenixChat.RoomList.entries(room_server)
+    users = PhoenixChat.RoomList.entries_to_list(user_list)
+    PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => users}
+    {:noreply, socket}
+  end
 
   intercept ["new_msg"]
   

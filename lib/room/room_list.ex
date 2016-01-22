@@ -77,7 +77,7 @@ defmodule PhoenixChat.RoomList do
       entry
     end)
     |> Enum.to_list
-end
+  end
 
   def update_entries_presence(%PhoenixChat.RoomList{entries: entries, auto_id: auto_id}) do
     new_entries = update_presence_all(entries)
@@ -106,6 +106,10 @@ end
       end
     end
     entry
+  end
+  
+  def update_entry_field(room_list, entry_id, field, value) do
+    update_entry(room_list, entry_id, fn(old_entry) -> Map.put(old_entry, field, value) end)
   end
 
   def update_heartbeat(room_list, entry_id) do
