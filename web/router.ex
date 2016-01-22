@@ -38,7 +38,6 @@ defmodule PhoenixChat.Router do
   # end
   defp put_user_token(conn, _) do
     conn = put_session(conn, :force_session_dummy_data, 'forced')
-    #IO.inspect conn
     if current_user = conn.assigns[:current_user] do
       token = Phoenix.Token.sign(conn, "user socket", current_user.id)
       assign(conn, :user_token, token)

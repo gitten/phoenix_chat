@@ -18,6 +18,11 @@ defmodule PhoenixChat.RoomServer do
     GenServer.call(room_server, {:add_entry, new_entry})
   end
   
+  
+  def entries(room_server, field, param) do
+    GenServer.call(room_server, {:entries, field, param})
+  end
+
   def entries(room_server, param) do
     GenServer.call(room_server, {:entries, param})
   end
@@ -37,7 +42,6 @@ defmodule PhoenixChat.RoomServer do
 
   def handle_cast({:update_heartbeat, user_id}, room_list) do
     new_state = PhoenixChat.RoomList.update_heartbeat(room_list, user_id)
-    #IO.inspect [:new_heartbeat, user_id, new_state]
     {:noreply, new_state}
   end
 
@@ -50,8 +54,15 @@ defmodule PhoenixChat.RoomServer do
     }
   end
 
+  def handle_call({:entries, field, param}, _, room_list) do
+    {
+      :reply,
+      PhoenixChat.RoomList.entries(room_list, param),
+      room_list
+    }
+  end
+
   def handle_call({:entries, param}, _, room_list) do
-    IO.inspect [:entries_Test, PhoenixChat.RoomList.entries(room_list, param)]
     {
       :reply,
       PhoenixChat.RoomList.entries(room_list, param),
@@ -60,7 +71,6 @@ defmodule PhoenixChat.RoomServer do
   end
 
   def handle_call({:size, presence}, _, room_list) do
-    #IO.inspect [:afaf, PhoenixChat.RoomList.size(room_list, presence) ]
     {
       :reply,
       PhoenixChat.RoomList.size(room_list, presence),

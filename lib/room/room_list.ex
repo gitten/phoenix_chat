@@ -49,7 +49,6 @@ defmodule PhoenixChat.RoomList do
   end
   
   def entries(%PhoenixChat.RoomList{entries: entries}, nil) do
-    #IO.inspect [:entries, entries]
     entries
   end
   
@@ -60,7 +59,6 @@ defmodule PhoenixChat.RoomList do
        end)
     |> Enum.to_list
     |> Enum.into(%{})
-#    |> Map.size
   end
 
   def update_entries_presence(%PhoenixChat.RoomList{entries: entries, auto_id: auto_id}) do
@@ -82,12 +80,9 @@ defmodule PhoenixChat.RoomList do
     now = :erlang.system_time()
     heartbeat = entry.heartbeat
     diff = now - entry.heartbeat
-    #IO.inspect [:now, now, :diff, diff, :entry, entry]
     if diff > 3999133052 do
-      #IO.inspect [:now, now, :heartbeat, heartbeat, :diff, diff, :entry, entry, "missing"]
       entry = Map.put(entry, :presence, "missing")
     else
-      #IO.inspect [:now, now, :heartbeat, heartbeat, :diff, diff, :entry, entry, "present"]
       entry = Map.put(entry, :presence, "present")
     end
     entry
