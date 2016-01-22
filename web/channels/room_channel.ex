@@ -18,6 +18,7 @@ defmodule PhoenixChat.RoomChannel do
   end
   
   def handle_in("close", _params, socket) do
+    IO.inspect [:closing_time, :erlang.system_time()]
     room_server = PhoenixChat.RoomServer.start_single
     #IO.inspect [:closing, socket.assigns.user_id]
     PhoenixChat.RoomServer.close_user(room_server, socket.assigns.user_id)
