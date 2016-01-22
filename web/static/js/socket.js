@@ -71,7 +71,10 @@ chatInput.on("keypress", event => {
 })
 
 channel.on("new_msg", payload => {
-  messagesContainer.append(`<br/>[${Date()}] ${payload.body}`)
+  //messagesContainer.append(`<br/>[${Date()}] ${payload.body}`)
+  //console.log(payload);
+  //console.log(chatRowOther(payload));
+  messagesContainer.append(chatRowOther(payload))
 })
 
 channel.on("seek", payload => {
@@ -120,6 +123,35 @@ function updateUserList(userList) {
     }
   }
   $("#totalUserCount").html(presentCount);
+}
+
+function chatRowSelf(data) {
+  return `<!-- Message to the right -->
+      <div class="direct-chat-msg right">
+        <div class="direct-chat-info clearfix">
+          <span class="direct-chat-name pull-right">${data.name}</span>
+          <span class="direct-chat-timestamp pull-left">${data.date}</span>
+        </div><!-- /.direct-chat-info -->
+        <img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
+        <div class="direct-chat-text">
+          ${data.body}
+        </div><!-- /.direct-chat-text -->
+      </div><!-- /.direct-chat-msg -->
+    </div><!-- /.direct-chat-messages-->`;
+}
+
+function chatRowOther(data) {
+  return `<!-- Message. Default to the left -->
+      <div class="direct-chat-msg">
+        <div class="direct-chat-info clearfix">
+          <span class="direct-chat-name pull-left">${data.name}</span>
+          <span class="direct-chat-timestamp pull-right">${data.date}</span>
+        </div><!-- /.direct-chat-info -->
+        <img class="direct-chat-img" src="../dist/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
+        <div class="direct-chat-text">
+          ${data.body}
+        </div><!-- /.direct-chat-text -->
+      </div><!-- /.direct-chat-msg -->`;
 }
 
 export default socket

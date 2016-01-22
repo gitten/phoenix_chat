@@ -28,17 +28,20 @@ defmodule PhoenixChat.RoomChannel do
   def handle_in("new_msg", %{"body" => body}, socket) do
     room_server = PhoenixChat.RoomServer.start_single
     user = PhoenixChat.RoomServer.entry(room_server, :user_id, socket.assigns.user_id)
+    {:ok, now} =
+      Timex.Date.local
+      |> Timex.DateFormat.format("{ISO}")
     cond do
       Regex.match?(~r/^\d+$/, body) ->
-        broadcast! socket, "seek", %{user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "seek", %{date: now, user_id: user.user_id, name: user.name, body: body }
       Regex.match?(~r/^\d+\.\d+$/, body) ->
-        broadcast! socket, "speed", %{user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "speed", %{date: now, user_id: user.user_id, name: user.name, body: body }
       Regex.match?(~r/^p$/, body) ->
-        broadcast! socket, "pause", %{user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "pause", %{date: now, user_id: user.user_id, name: user.name, body: body }
       Regex.match?(~r/^up$/, body) ->
-        broadcast! socket, "play", %{user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "play", %{date: now, user_id: user.user_id, name: user.name, body: body }
       true ->
-        broadcast! socket, "new_msg", %{user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "new_msg", %{date: now, user_id: user.user_id, name: user.name, body: body }
     end
     {:noreply, socket}
   end
