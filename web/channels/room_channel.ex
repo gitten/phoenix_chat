@@ -2,8 +2,10 @@ defmodule PhoenixChat.RoomChannel do
   use Phoenix.Channel
   
   def join("rooms:lobby", _message, socket) do
-    #socket = assign(socket, :user, msg[:random.uniform(777)])
-    {:ok, socket}
+    room_server = PhoenixChat.RoomServer.start_single
+    entries = PhoenixChat.RoomServer.entries(room_server, :present)
+    users = PhoenixChat.RoomList.room_list(entries)
+    {:ok, %{:user_list => users}, socket}
   end
   
   def join("rooms:" <> _private_room_id, _params, _socket) do
@@ -18,9 +20,7 @@ defmodule PhoenixChat.RoomChannel do
   end
   
   def handle_in("close", _params, socket) do
-    IO.inspect [:closing_time, :erlang.system_time()]
     room_server = PhoenixChat.RoomServer.start_single
-    #IO.inspect [:closing, socket.assigns.user_id]
     PhoenixChat.RoomServer.close_user(room_server, socket.assigns.user_id)
     {:noreply, socket}
   end

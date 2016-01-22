@@ -53,10 +53,11 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 socket.connect()
 
-let channel           = socket.channel("rooms:lobby", {})
+let channel = socket.channel("rooms:lobby", {})
 channel.join()
   .receive("ok", resp => {
-    console.log("Joined successfully", resp)
+    console.log(resp.user_list)
+    updateUserList(resp.user_list)
   })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
@@ -99,10 +100,20 @@ channel.on("play", payload => {
 })
 
 channel.on("heartbeat", payload => {
+  console.log(payload)
+  updateUserList(payload.user_list)
+  channel.push("heartbeat", {time: payload.time})
+})
+
+$(window).on('unload', function(){
+  channel.push("close")
+});
+
+function updateUserList(userList) {
   $("#sidebarMenu .userRow").detach();
   var sidemenu = $("#sidebarMenu");
   var presentCount = 0, missingCount = 0;
-  for (let user of payload.user_list) {
+  for (let user of userList) {
     if (user.presence === "present") {
       presentCount++;
       sidemenu.prepend('<li class="active userRow"><a href="#"><i class="fa fa-link"></i> <span>' + user.user_id + '</span></a></li>');
@@ -111,11 +122,6 @@ channel.on("heartbeat", payload => {
     }
   }
   $("#totalUserCount").html(presentCount);
-  channel.push("heartbeat", {time: payload.time})
-})
-
-$(window).on('unload', function(){
-  channel.push("close")
-});
+}
 
 export default socket

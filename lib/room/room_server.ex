@@ -52,7 +52,6 @@ defmodule PhoenixChat.RoomServer do
   def handle_call({:close_user, user_id}, _, room_list) do
     new_state = PhoenixChat.RoomList.close_user(room_list, user_id)
     users = PhoenixChat.RoomList.entries_to_list(new_state)
-    #IO.inspect [:closing, user_id, :erlang.system_time()]
     PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => users}
     {
       :reply,

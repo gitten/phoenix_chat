@@ -61,6 +61,11 @@ defmodule PhoenixChat.RoomList do
     |> Enum.into(%{})
   end
 
+  def room_list(entries) do
+    room_list = %PhoenixChat.RoomList{entries: entries, auto_id: 0}
+    entries_to_list(room_list)
+  end
+
   def entries_to_list(%PhoenixChat.RoomList{entries: entries}) do
     entries
     |> Enum.map(fn({_, entry}) ->
@@ -90,10 +95,8 @@ end
     diff = now - heartbeat
     if entry[:presence] != "closed" do
       if diff > 5999133052 do
-        #IO.inspect [:missing, entry, now, heartbeat, diff]
         entry = Map.put(entry, :presence, "missing")
       else
-        #IO.inspect [:present, entry, now, heartbeat, diff]
         entry = Map.put(entry, :presence, "present")
       end
     end
