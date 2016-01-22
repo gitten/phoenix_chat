@@ -56,12 +56,14 @@ socket.connect()
 let channel = socket.channel("rooms:lobby", {})
 channel.join()
   .receive("ok", resp => {
-    updateUserList(resp.user_list)
+    updateUserList(resp.user_list);
+    userId = resp.user_id;
   })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 let chatInput         = $("#chat-input")
 let messagesContainer = $("#messages")
+var userId;
 
 chatInput.on("keypress", event => {
   if(event.keyCode === 13){
@@ -74,7 +76,13 @@ channel.on("new_msg", payload => {
   //messagesContainer.append(`<br/>[${Date()}] ${payload.body}`)
   //console.log(payload);
   //console.log(chatRowOther(payload));
-  messagesContainer.append(chatRowOther(payload))
+  var self = payload.user_id == userId;
+  //console.log(self);
+  if (self) {
+    messagesContainer.append(chatRowSelf(payload))
+  } else {
+    messagesContainer.append(chatRowOther(payload))
+  }
 })
 
 channel.on("seek", payload => {

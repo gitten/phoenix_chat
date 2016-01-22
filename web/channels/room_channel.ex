@@ -5,7 +5,7 @@ defmodule PhoenixChat.RoomChannel do
     room_server = PhoenixChat.RoomServer.start_single
     entries = PhoenixChat.RoomServer.entries(room_server, :present)
     users = PhoenixChat.RoomList.room_list(entries)
-    {:ok, %{:user_list => users}, socket}
+    {:ok, %{:user_id => socket.assigns.user_id, :user_list => users}, socket}
   end
   
   def join("rooms:" <> _private_room_id, _params, _socket) do
