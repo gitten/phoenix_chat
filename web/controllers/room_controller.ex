@@ -6,11 +6,11 @@ defmodule PhoenixChat.RoomController do
     user_id = :random.uniform(99999999999)
     room_server = PhoenixChat.RoomServer.start_single
     user = PhoenixChat.RoomServer.add_entry(room_server,
-      %{user_id: {user_id},
+      %{user_id: user_id,
         name: user_id,
         heartbeat: user_id,
         presence: "present",
-        pid: self})
+        pid: to_string(:erlang.pid_to_list(self))})
     x = PhoenixChat.RoomServer.size(room_server, :present)
     y = PhoenixChat.RoomServer.entries(room_server, :present)
     id = user.user_id

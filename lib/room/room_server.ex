@@ -80,7 +80,10 @@ defmodule PhoenixChat.RoomServer do
   
   def handle_info(:heartbeat_loop, room_list) do
     new_state = PhoenixChat.RoomList.update_entries_presence(room_list)
-    PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => "user_list"}
+    users = PhoenixChat.RoomList.entries_to_list(new_state)
+    #IO.inspect [:nestat, Poison.encode!(users)]
+  #IO.inspect [:teser, PhoenixChat.RoomList.entries_to_list(new_state)]
+    PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => users}
     {:noreply, new_state}
   end
   

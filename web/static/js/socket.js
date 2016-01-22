@@ -99,8 +99,19 @@ channel.on("play", payload => {
 })
 
 channel.on("heartbeat", payload => {
+  $("#sidebarMenu .userRow").detach();
+  var sidemenu = $("#sidebarMenu");
+  var presentCount = 0, missingCount = 0;
+  for (let user of payload.user_list) {
+    if (user.presence === "present") {
+      presentCount++;
+      sidemenu.prepend('<li class="active userRow"><a href="#"><i class="fa fa-link"></i> <span>' + user.user_id + '</span></a></li>');
+    } else {
+      missingCount++;
+    }
+  }
+  $("#totalUserCount").html(presentCount);
   channel.push("heartbeat", {time: payload.time})
-  //console.log("user list!");
 })
 
 export default socket

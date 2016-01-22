@@ -61,6 +61,14 @@ defmodule PhoenixChat.RoomList do
     |> Enum.into(%{})
   end
 
+  def entries_to_list(%PhoenixChat.RoomList{entries: entries}) do
+    entries
+    |> Enum.map(fn({_, entry}) ->
+      entry
+    end)
+    |> Enum.to_list
+end
+
   def update_entries_presence(%PhoenixChat.RoomList{entries: entries, auto_id: auto_id}) do
     new_entries = update_presence_all(entries)
     %PhoenixChat.RoomList{entries: new_entries,
