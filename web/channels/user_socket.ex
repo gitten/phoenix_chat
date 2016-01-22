@@ -19,19 +19,17 @@ defmodule PhoenixChat.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    #IO.inspect socket
-    pid = socket.transport_pid
-    room_server = PhoenixChat.RoomServer.start_single
-    user = PhoenixChat.RoomServer.add_entry(room_server,
-      %{user_id: {pid},
-        name: :erlang.pid_to_list(pid),
-        heartbeat: :erlang.system_time()})
-    IO.inspect user
-    {:ok, assign(socket, :user_id, socket.transport_pid)}
-#    {:ok, socket}
+  def connect(%{"token" => token}, socket) do
+    # Max age of 2 weeks (1209600 seconds)
+    case Phoenix.Token.verify(socket, "user", token, max_age: 1209600) do
+      {:ok, user_id} ->
+        socket = assign(socket, :user_id, user_id)
+        {:ok, socket}
+      {:error, _} ->
+        :error
+    end  
   end
-
+  
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #
   #     def id(socket), do: "users_socket:#{socket.assigns.user_id}"
