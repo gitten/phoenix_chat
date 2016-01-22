@@ -125,12 +125,17 @@ function updateUserList(userList) {
   for (let user of userList) {
     if (user.presence === "present") {
       presentCount++;
-      sidemenu.prepend('<li class="active userRow"><a href="#"><i class="fa fa-link"></i> <span>' + user.name + '</span></a></li>');
+      sidemenu.prepend(userListRow(user));
     } else {
       missingCount++;
     }
   }
   $("#totalUserCount").html(presentCount);
+}
+
+function userListRow(user) {
+  var colorClass = user.gender === 'f' ? 'bg-maroon' : 'bg-light-blue';
+  return `<li class="active userRow"><a class="${colorClass}" href="#"><i class="fa fa-link"></i> <span>${user.name}</span></a></li>`;
 }
 
 function chatRowSelf(data) {

@@ -10,7 +10,7 @@ defmodule PhoenixChat.RoomController do
     assign(conn, :user_token, token)
     user = PhoenixChat.RoomServer.add_entry(room_server,
       %{user_id: user_id,
-        name: name,
+        name: name <> " (placeholder_name)",
         gender: gender,
         heartbeat: :erlang.system_time(),
         presence: "present",
