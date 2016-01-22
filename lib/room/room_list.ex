@@ -97,39 +97,13 @@ end
     end
     entry
   end
-  
-  def update_heartbeat(
-    %PhoenixChat.RoomList{entries: entries} = room_list,
-    entry_id
-  ) do
-    case entries[entry_id] do
-      nil ->
-        room_list
-      old_entry ->
-        old_entry_id = old_entry.user_id
-        new_entry = %{user_id: ^old_entry_id} = Map.put(old_entry, :heartbeat, :erlang.system_time())
-        new_entries = Map.put(entries, new_entry.user_id, new_entry)
-        %PhoenixChat.RoomList{room_list | entries: new_entries}
-    end
+
+  def update_heartbeat(room_list, entry_id) do
+    update_entry(room_list, entry_id, fn(old_entry) -> Map.put(old_entry, :heartbeat, :erlang.system_time()) end)
   end
 
-  def close_user(
-    %PhoenixChat.RoomList{entries: entries} = room_list,
-    entry_id
-  ) do
-    case entries[entry_id] do
-      nil ->
-        room_list
-      old_entry ->
-        old_entry_id = old_entry.user_id
-        new_entry = %{user_id: ^old_entry_id} = Map.put(old_entry, :presence, "closed")
-        new_entries = Map.put(entries, new_entry.user_id, new_entry)
-        %PhoenixChat.RoomList{room_list | entries: new_entries}
-    end
-  end
-
-  def update_entry(room_list, %{} = new_entry) do
-    update_entry(room_list, new_entry.id, fn(_) -> new_entry end)
+  def close_user(room_list, entry_id) do
+    update_entry(room_list, entry_id, fn(old_entry) -> Map.put(old_entry, :presence, "closed") end)
   end
 
   def update_entry(
@@ -141,9 +115,9 @@ end
       nil ->
         room_list
       old_entry ->
-        old_entry_id = old_entry.id
+        old_entry_id = old_entry.user_id
         new_entry = %{user_id: ^old_entry_id} = updater_fun.(old_entry)
-        new_entries = Map.put(entries, new_entry.id, new_entry)
+        new_entries = Map.put(entries, new_entry.user_id, new_entry)
         %PhoenixChat.RoomList{room_list | entries: new_entries}
     end
   end
