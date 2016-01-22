@@ -20,7 +20,7 @@ defmodule PhoenixChat.RoomList do
     entry = Map.put(entry, :id, auto_id)
     new_entries = Map.put(entries, entry[:user_id], entry)
     {
-      %PhoenixChat.RoomList{room_list |
+      %PhoenixChat.RoomList{room_list | 
         entries: new_entries,
         auto_id: auto_id + 1
       },
@@ -39,6 +39,7 @@ defmodule PhoenixChat.RoomList do
   end
   
   def entries(%PhoenixChat.RoomList{entries: entries}) do
+    IO.inspect [:entries, entries]
     entries
   end
   
@@ -68,15 +69,19 @@ defmodule PhoenixChat.RoomList do
   
   def update_heartbeat(
     %PhoenixChat.RoomList{entries: entries} = room_list,
-    user_id
+    entry_id
   ) do
-    case entries[user_id] do
+    IO.inspect [:before_heartbeat, room_list]
+    case entries[entry_id] do
       nil ->
+        #IO.inspect [:after_heartbeat_nil, room_list]
         room_list
       old_entry ->
-        old_entry_id = old_entry.id
-        new_entry = %{id: ^old_entry_id} = Map.put(old_entry, :heartbeat, :erlang.system_time())
-        new_entries = Map.put(entries, new_entry.id, new_entry)
+        old_entry_id = old_entry.user_id
+        #new_entry = %{id: ^old_entry_id} = Map.put(old_entry, :heartbeat, :erlang.system_time())
+        new_entry = Map.put(old_entry, :heartbeat, :erlang.system_time())
+        new_entries = Map.put(entries, new_entry.user_id, new_entry)
+        #IO.inspect [:after_heartbeat, %PhoenixChat.RoomList{room_list | entries: new_entries} ]
         %PhoenixChat.RoomList{room_list | entries: new_entries}
     end
   end
@@ -90,13 +95,16 @@ defmodule PhoenixChat.RoomList do
     entry_id,
     updater_fun
   ) do
+    #IO.inspect [:before_update_entry, room_list]
     case entries[entry_id] do
       nil -> room_list
 
       old_entry ->
         old_entry_id = old_entry.id
-        new_entry = %{id: ^old_entry_id} = updater_fun.(old_entry)
+        #new_entry = %{id: ^old_entry_id} = updater_fun.(old_entry)
+        new_entry = updater_fun.(old_entry)
         new_entries = Map.put(entries, new_entry.id, new_entry)
+        #IO.inspect [:after_update_entry, %PhoenixChat.RoomList{room_list | entries: new_entries} ]
         %PhoenixChat.RoomList{room_list | entries: new_entries}
     end
   end
