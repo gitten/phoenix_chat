@@ -19,9 +19,6 @@ defmodule PhoenixChat.RoomList do
          entry.presence == "present"
        end)
     |> Enum.to_list
-#    |> Enum.map(fn({_, entry}) ->
-#         entry
-#       end)
     |> Enum.into(%{})
     |> Map.size
   end
@@ -41,7 +38,7 @@ defmodule PhoenixChat.RoomList do
     }
   end
 
-  def entries(%PhoenixChat.RoomList{entries: entries}, user_id) do
+  def entries(%PhoenixChat.RoomList{entries: entries}, :user_id, user_id) do
     entries
     |> Stream.filter(fn({_, entry}) ->
          entry.user_id == user_id
@@ -51,11 +48,21 @@ defmodule PhoenixChat.RoomList do
        end)
   end
   
-  def entries(%PhoenixChat.RoomList{entries: entries}) do
+  def entries(%PhoenixChat.RoomList{entries: entries}, nil) do
     #IO.inspect [:entries, entries]
     entries
   end
   
+  def entries(%PhoenixChat.RoomList{entries: entries}, :present) do
+    entries
+    |> Stream.filter(fn({_, entry}) ->
+         entry.presence == "present"
+       end)
+    |> Enum.to_list
+    |> Enum.into(%{})
+#    |> Map.size
+  end
+
   def update_entries_presence(%PhoenixChat.RoomList{entries: entries, auto_id: auto_id}) do
     new_entries = update_presence_all(entries)
     %PhoenixChat.RoomList{entries: new_entries,
@@ -76,7 +83,7 @@ defmodule PhoenixChat.RoomList do
     heartbeat = entry.heartbeat
     diff = now - entry.heartbeat
     #IO.inspect [:now, now, :diff, diff, :entry, entry]
-    if diff > 5999133054 do
+    if diff > 3999133052 do
       #IO.inspect [:now, now, :heartbeat, heartbeat, :diff, diff, :entry, entry, "missing"]
       entry = Map.put(entry, :presence, "missing")
     else

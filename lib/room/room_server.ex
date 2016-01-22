@@ -14,26 +14,18 @@ defmodule PhoenixChat.RoomServer do
     GenServer.start(PhoenixChat.RoomServer, nil, name: :room_server)
   end
 
-  def entries(room_server, user_id) do
-    GenServer.call(room_server, {:entries, user_id})
-  end
-
   def add_entry(room_server, new_entry) do
     GenServer.call(room_server, {:add_entry, new_entry})
   end
   
-  def entries(room_server) do
-    GenServer.call(room_server, {:entries})
+  def entries(room_server, param) do
+    GenServer.call(room_server, {:entries, param})
   end
-  
-  def size(room_server) do
-    GenServer.call(room_server, {:size, nil})
+
+  def size(room_server, param) do
+    GenServer.call(room_server, {:size, param})
   end
-  
-  def size(room_server, :present) do
-    GenServer.call(room_server, {:size, :present})
-  end
-  
+    
   def update_heartbeat(room_server, user_id) do
     GenServer.cast(room_server, {:update_heartbeat, user_id})
   end
@@ -58,18 +50,11 @@ defmodule PhoenixChat.RoomServer do
     }
   end
 
-  def handle_call({:entries, user_id}, _, room_list) do
+  def handle_call({:entries, param}, _, room_list) do
+    IO.inspect [:entries_Test, PhoenixChat.RoomList.entries(room_list, param)]
     {
       :reply,
-      PhoenixChat.RoomList.entries(room_list, user_id),
-      room_list
-    }
-  end
-
-  def handle_call({:entries}, _, room_list) do
-    {
-      :reply,
-      PhoenixChat.RoomList.entries(room_list),
+      PhoenixChat.RoomList.entries(room_list, param),
       room_list
     }
   end
