@@ -11,7 +11,7 @@ defmodule PhoenixChat.RoomController do
         heartbeat: user_id,
         presence: "present",
         pid: self})
-    x = PhoenixChat.RoomServer.size(room_server)
+    x = PhoenixChat.RoomServer.size(room_server, :present)
     y = PhoenixChat.RoomServer.entries(room_server)
     id = user.user_id
     token = Phoenix.Token.sign(conn, "user", id)

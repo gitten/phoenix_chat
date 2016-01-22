@@ -27,9 +27,13 @@ defmodule PhoenixChat.RoomServer do
   end
   
   def size(room_server) do
-    GenServer.call(room_server, {:size})
+    GenServer.call(room_server, {:size, nil})
   end
-
+  
+  def size(room_server, :present) do
+    GenServer.call(room_server, {:size, :present})
+  end
+  
   def update_heartbeat(room_server, user_id) do
     GenServer.cast(room_server, {:update_heartbeat, user_id})
   end
@@ -41,6 +45,7 @@ defmodule PhoenixChat.RoomServer do
 
   def handle_cast({:update_heartbeat, user_id}, room_list) do
     new_state = PhoenixChat.RoomList.update_heartbeat(room_list, user_id)
+    #IO.inspect [:new_heartbeat, user_id, new_state]
     {:noreply, new_state}
   end
 
@@ -69,10 +74,11 @@ defmodule PhoenixChat.RoomServer do
     }
   end
 
-  def handle_call({:size}, _, room_list) do
+  def handle_call({:size, presence}, _, room_list) do
+    #IO.inspect [:afaf, PhoenixChat.RoomList.size(room_list, presence) ]
     {
       :reply,
-      PhoenixChat.RoomList.size(room_list),
+      PhoenixChat.RoomList.size(room_list, presence),
       room_list
     }
   end

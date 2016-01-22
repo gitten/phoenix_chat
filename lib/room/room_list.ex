@@ -8,9 +8,22 @@ defmodule PhoenixChat.RoomList do
       &add_entry(&2, &1)
     )
   end
-
-  def size(room_list) do
+  
+  def size(room_list, nil) do
     Map.size(room_list.entries)
+  end
+  
+  def size(room_list, :present) do
+    room_list.entries
+    |> Stream.filter(fn({_, entry}) ->
+         entry.presence == "present"
+       end)
+    |> Enum.to_list
+#    |> Enum.map(fn({_, entry}) ->
+#         entry
+#       end)
+    |> Enum.into(%{})
+    |> Map.size
   end
 
   def add_entry(
@@ -39,7 +52,7 @@ defmodule PhoenixChat.RoomList do
   end
   
   def entries(%PhoenixChat.RoomList{entries: entries}) do
-    IO.inspect [:entries, entries]
+    #IO.inspect [:entries, entries]
     entries
   end
   
@@ -59,9 +72,15 @@ defmodule PhoenixChat.RoomList do
   end
 
   defp update_presence(entry) do
-    if entry.heartbeat + 666666 < :erlang.system_time() do
+    now = :erlang.system_time()
+    heartbeat = entry.heartbeat
+    diff = now - entry.heartbeat
+    #IO.inspect [:now, now, :diff, diff, :entry, entry]
+    if diff > 5999133054 do
+      #IO.inspect [:now, now, :heartbeat, heartbeat, :diff, diff, :entry, entry, "missing"]
       entry = Map.put(entry, :presence, "missing")
     else
+      #IO.inspect [:now, now, :heartbeat, heartbeat, :diff, diff, :entry, entry, "present"]
       entry = Map.put(entry, :presence, "present")
     end
     entry
