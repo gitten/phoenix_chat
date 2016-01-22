@@ -19,7 +19,13 @@
         Name:
         <input id="myName" type="text" name="name">
         &nbsp;Gender:
-        <input id="myGender" type="text" name="name">
+        <select id="myGender">
+          <option value="m" selected="selected">Male</option>
+          <option value="f">Female</option>
+          <option value="b">Bigender</option>
+          <option value="b">TODO:</option>
+          <!-- http://www.slate.com/blogs/future_tense/2014/02/13/facebook_custom_gender_options_here_are_all_56_custom_options.html -->
+        </select>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->

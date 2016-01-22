@@ -134,12 +134,12 @@ function updateUserList(userList) {
 }
 
 function userListRow(user) {
-  var colorClass = user.gender === 'f' ? 'bg-maroon' : 'bg-light-blue';
+  var colorClass = getColorClassForGender(user.gender);
   return `<li class="active userRow"><a class="${colorClass}" href="#"><i class="fa fa-link"></i> <span>${user.name}</span></a></li>`;
 }
 
 function chatRowSelf(user) {
-  var colorClass = user.gender === 'f' ? 'bg-maroon' : 'bg-light-blue';
+  var colorClass = getColorClassForGender(user.gender);
   return `<!-- Message to the right -->
       <div class="direct-chat-msg right">
         <div class="direct-chat-info clearfix">
@@ -155,7 +155,7 @@ function chatRowSelf(user) {
 }
 
 function chatRowOther(user) {
-  var colorClass = user.gender === 'f' ? 'bg-maroon' : 'bg-light-blue';
+  var colorClass = getColorClassForGender(user.gender);
   return `<!-- Message. Default to the left -->
       <div class="direct-chat-msg">
         <div class="direct-chat-info clearfix">
@@ -167,6 +167,17 @@ function chatRowOther(user) {
           ${user.body}
         </div><!-- /.direct-chat-text -->
       </div><!-- /.direct-chat-msg -->`;
+}
+
+function getColorClassForGender(gender) {
+  switch (gender) {
+    case "m":
+      return "bg-light-blue";
+    case "f":
+      return "bg-maroon";
+    default:
+      return "bg-purple";
+  }
 }
 
 export default socket
