@@ -56,7 +56,6 @@ socket.connect()
 let channel = socket.channel("rooms:lobby", {})
 channel.join()
   .receive("ok", resp => {
-    console.log(resp.user_list)
     updateUserList(resp.user_list)
   })
   .receive("error", resp => { console.log("Unable to join", resp) })
@@ -100,7 +99,6 @@ channel.on("play", payload => {
 })
 
 channel.on("heartbeat", payload => {
-  console.log(payload)
   updateUserList(payload.user_list)
   channel.push("heartbeat", {time: payload.time})
 })

@@ -33,7 +33,7 @@
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" id="sidebarMenu">
         <%= for row <- Map.values(@room_data) do %>
-          <li class="active userRow"><a href="#"><i class="fa fa-link"></i> <span><%= row[:name] %></span></a></li>
+          <!-- <li class="active userRow"><a href="#"><i class="fa fa-link"></i> <span><%= row[:name] %></span></a></li> -->
         <% end %>
         <li class="header" id="totalUsers">Total Users: <span id="totalUserCount"><%= @room_size %></span></li>
         
