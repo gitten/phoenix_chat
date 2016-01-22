@@ -114,7 +114,7 @@ function updateUserList(userList) {
   for (let user of userList) {
     if (user.presence === "present") {
       presentCount++;
-      sidemenu.prepend('<li class="active userRow"><a href="#"><i class="fa fa-link"></i> <span>' + user.user_id + '</span></a></li>');
+      sidemenu.prepend('<li class="active userRow"><a href="#"><i class="fa fa-link"></i> <span>' + user.name + '</span></a></li>');
     } else {
       missingCount++;
     }
