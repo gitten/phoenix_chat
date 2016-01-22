@@ -8,7 +8,7 @@ defmodule PhoenixChat.RoomController do
     user = PhoenixChat.RoomServer.add_entry(room_server,
       %{user_id: user_id,
         name: user_id,
-        heartbeat: user_id,
+        heartbeat: :erlang.system_time(),
         presence: "present",
         pid: to_string(:erlang.pid_to_list(self))})
     x = PhoenixChat.RoomServer.size(room_server, :present)

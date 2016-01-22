@@ -90,8 +90,10 @@ end
     diff = now - heartbeat
     if entry[:presence] != "closed" do
       if diff > 5999133052 do
+        #IO.inspect [:missing, entry, now, heartbeat, diff]
         entry = Map.put(entry, :presence, "missing")
       else
+        #IO.inspect [:present, entry, now, heartbeat, diff]
         entry = Map.put(entry, :presence, "present")
       end
     end

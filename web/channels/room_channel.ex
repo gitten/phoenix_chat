@@ -19,6 +19,7 @@ defmodule PhoenixChat.RoomChannel do
   
   def handle_in("close", _params, socket) do
     room_server = PhoenixChat.RoomServer.start_single
+    #IO.inspect [:closing, socket.assigns.user_id]
     PhoenixChat.RoomServer.close_user(room_server, socket.assigns.user_id)
     {:noreply, socket}
   end
