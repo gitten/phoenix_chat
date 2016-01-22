@@ -36,7 +36,7 @@ defmodule PhoenixChat.RoomServer do
   end
 
   def close_user(room_server, user_id) do
-    GenServer.cast(room_server, {:close_user, user_id})
+    GenServer.call(room_server, {:close_user, user_id})
   end
 
   def init(_) do
@@ -49,11 +49,16 @@ defmodule PhoenixChat.RoomServer do
     {:noreply, new_state}
   end
 
-  def handle_cast({:close_user, user_id}, room_list) do
+  def handle_call({:close_user, user_id}, _, room_list) do
     new_state = PhoenixChat.RoomList.close_user(room_list, user_id)
     users = PhoenixChat.RoomList.entries_to_list(new_state)
+    IO.inspect [:closing, user_id]
     PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => users}
-    {:noreply, new_state}
+    {
+      :reply,
+      nil,
+      new_state
+    }
   end
 
   def handle_call({:add_entry, new_entry}, _, room_list) do

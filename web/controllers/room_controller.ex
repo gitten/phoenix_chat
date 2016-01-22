@@ -2,6 +2,8 @@ defmodule PhoenixChat.RoomController do
   use PhoenixChat.Web, :controller
  
   def index(conn, _params) do
+    IO.inspect [:load_page, "load page"]
+    #:timer.sleep(500)
     :random.seed(:erlang.system_time())
     user_id = :random.uniform(99999999999)
     room_server = PhoenixChat.RoomServer.start_single
