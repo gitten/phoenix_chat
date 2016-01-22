@@ -33,15 +33,15 @@ defmodule PhoenixChat.RoomChannel do
       |> Timex.DateFormat.format("{ISO}")
     cond do
       Regex.match?(~r/^\d+$/, body) ->
-        broadcast! socket, "seek", %{date: now, user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "seek", %{date: now, user_id: user.user_id, name: user.name, body: body, gender: user.gender}
       Regex.match?(~r/^\d+\.\d+$/, body) ->
-        broadcast! socket, "speed", %{date: now, user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "speed", %{date: now, user_id: user.user_id, name: user.name, body: body, gender: user.gender }
       Regex.match?(~r/^p$/, body) ->
-        broadcast! socket, "pause", %{date: now, user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "pause", %{date: now, user_id: user.user_id, name: user.name, body: body, gender: user.gender }
       Regex.match?(~r/^up$/, body) ->
-        broadcast! socket, "play", %{date: now, user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "play", %{date: now, user_id: user.user_id, name: user.name, body: body, gender: user.gender }
       true ->
-        broadcast! socket, "new_msg", %{date: now, user_id: user.user_id, name: user.name, body: body }
+        broadcast! socket, "new_msg", %{date: now, user_id: user.user_id, name: user.name, body: body, gender: user.gender }
     end
     {:noreply, socket}
   end

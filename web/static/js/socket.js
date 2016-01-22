@@ -138,31 +138,33 @@ function userListRow(user) {
   return `<li class="active userRow"><a class="${colorClass}" href="#"><i class="fa fa-link"></i> <span>${user.name}</span></a></li>`;
 }
 
-function chatRowSelf(data) {
+function chatRowSelf(user) {
+  var colorClass = user.gender === 'f' ? 'bg-maroon' : 'bg-light-blue';
   return `<!-- Message to the right -->
       <div class="direct-chat-msg right">
         <div class="direct-chat-info clearfix">
-          <span class="direct-chat-name pull-right">${data.name}</span>
-          <span class="direct-chat-timestamp pull-left">${data.date}</span>
+          <span class="direct-chat-name pull-right">${user.name}</span>
+          <span class="direct-chat-timestamp pull-left">${user.date}</span>
         </div><!-- /.direct-chat-info -->
         <img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
-        <div class="direct-chat-text">
-          ${data.body}
+        <div class="direct-chat-text ${colorClass}">
+          ${user.body}
         </div><!-- /.direct-chat-text -->
       </div><!-- /.direct-chat-msg -->
     </div><!-- /.direct-chat-messages-->`;
 }
 
-function chatRowOther(data) {
+function chatRowOther(user) {
+  var colorClass = user.gender === 'f' ? 'bg-maroon' : 'bg-light-blue';
   return `<!-- Message. Default to the left -->
       <div class="direct-chat-msg">
         <div class="direct-chat-info clearfix">
-          <span class="direct-chat-name pull-left">${data.name}</span>
-          <span class="direct-chat-timestamp pull-right">${data.date}</span>
+          <span class="direct-chat-name pull-left">${user.name}</span>
+          <span class="direct-chat-timestamp pull-right">${user.date}</span>
         </div><!-- /.direct-chat-info -->
         <img class="direct-chat-img" src="../dist/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
-        <div class="direct-chat-text">
-          ${data.body}
+        <div class="direct-chat-text ${colorClass}">
+          ${user.body}
         </div><!-- /.direct-chat-text -->
       </div><!-- /.direct-chat-msg -->`;
 }
