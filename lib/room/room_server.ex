@@ -35,6 +35,10 @@ defmodule PhoenixChat.RoomServer do
     GenServer.cast(room_server, {:update_heartbeat, user_id})
   end
 
+  def close_user(room_server, user_id) do
+    GenServer.cast(room_server, {:close_user, user_id})
+  end
+
   def init(_) do
     :timer.send_interval(2000, :heartbeat_loop)
     {:ok, PhoenixChat.RoomList.new}
@@ -42,6 +46,13 @@ defmodule PhoenixChat.RoomServer do
 
   def handle_cast({:update_heartbeat, user_id}, room_list) do
     new_state = PhoenixChat.RoomList.update_heartbeat(room_list, user_id)
+    {:noreply, new_state}
+  end
+
+  def handle_cast({:close_user, user_id}, room_list) do
+    new_state = PhoenixChat.RoomList.close_user(room_list, user_id)
+    users = PhoenixChat.RoomList.entries_to_list(new_state)
+    PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => users}
     {:noreply, new_state}
   end
 
@@ -57,7 +68,7 @@ defmodule PhoenixChat.RoomServer do
   def handle_call({:entries, field, param}, _, room_list) do
     {
       :reply,
-      PhoenixChat.RoomList.entries(room_list, param),
+      PhoenixChat.RoomList.entries(room_list, field, param),
       room_list
     }
   end
@@ -81,8 +92,6 @@ defmodule PhoenixChat.RoomServer do
   def handle_info(:heartbeat_loop, room_list) do
     new_state = PhoenixChat.RoomList.update_entries_presence(room_list)
     users = PhoenixChat.RoomList.entries_to_list(new_state)
-    #IO.inspect [:nestat, Poison.encode!(users)]
-  #IO.inspect [:teser, PhoenixChat.RoomList.entries_to_list(new_state)]
     PhoenixChat.Endpoint.broadcast! "rooms:lobby", "heartbeat", %{:time => :erlang.system_time(), :user_list => users}
     {:noreply, new_state}
   end

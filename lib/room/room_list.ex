@@ -87,11 +87,13 @@ end
   defp update_presence(entry) do
     now = :erlang.system_time()
     heartbeat = entry.heartbeat
-    diff = now - entry.heartbeat
-    if diff > 3999133052 do
-      entry = Map.put(entry, :presence, "missing")
-    else
-      entry = Map.put(entry, :presence, "present")
+    diff = now - heartbeat
+    if entry[:presence] != "closed" do
+      if diff > 5999133052 do
+        entry = Map.put(entry, :presence, "missing")
+      else
+        entry = Map.put(entry, :presence, "present")
+      end
     end
     entry
   end
@@ -106,6 +108,21 @@ end
       old_entry ->
         old_entry_id = old_entry.user_id
         new_entry = %{user_id: ^old_entry_id} = Map.put(old_entry, :heartbeat, :erlang.system_time())
+        new_entries = Map.put(entries, new_entry.user_id, new_entry)
+        %PhoenixChat.RoomList{room_list | entries: new_entries}
+    end
+  end
+
+  def close_user(
+    %PhoenixChat.RoomList{entries: entries} = room_list,
+    entry_id
+  ) do
+    case entries[entry_id] do
+      nil ->
+        room_list
+      old_entry ->
+        old_entry_id = old_entry.user_id
+        new_entry = %{user_id: ^old_entry_id} = Map.put(old_entry, :presence, "closed")
         new_entries = Map.put(entries, new_entry.user_id, new_entry)
         %PhoenixChat.RoomList{room_list | entries: new_entries}
     end

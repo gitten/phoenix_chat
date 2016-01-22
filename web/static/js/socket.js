@@ -114,4 +114,8 @@ channel.on("heartbeat", payload => {
   channel.push("heartbeat", {time: payload.time})
 })
 
+$(window).on('unload', function(){
+  channel.push("close")
+});
+
 export default socket

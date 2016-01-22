@@ -11,8 +11,15 @@ defmodule PhoenixChat.RoomChannel do
   end
   
   def handle_in("heartbeat", %{"time" => time}, socket) do
+    x = time
     room_server = PhoenixChat.RoomServer.start_single
     PhoenixChat.RoomServer.update_heartbeat(room_server, socket.assigns.user_id)
+    {:noreply, socket}
+  end
+  
+  def handle_in("close", _params, socket) do
+    room_server = PhoenixChat.RoomServer.start_single
+    PhoenixChat.RoomServer.close_user(room_server, socket.assigns.user_id)
     {:noreply, socket}
   end
   
