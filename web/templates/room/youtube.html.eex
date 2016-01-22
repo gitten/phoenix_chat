@@ -1,7 +1,4 @@
 <div id="ytplayer"></div>
-<div id="messages"></div>
-<input id="chat-input" type="text"></input>
-
 <style>
   #ytplayer {
     pointer-events: none;
@@ -22,8 +19,8 @@
   var player;
   function onYouTubePlayerAPIReady() {
     player = new YT.Player('ytplayer', {
-      height: '390',
-      width: '640',
+      height: '150',
+      width: '300',
       playerVars: {
         'autoplay': 1,
         'controls': 0,

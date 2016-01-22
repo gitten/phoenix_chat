@@ -1,3 +1,4 @@
 <%= render "youtube.html" %>
+<%= render "chat_box.html" %>
 
 <%= # render "cam.html" %>
